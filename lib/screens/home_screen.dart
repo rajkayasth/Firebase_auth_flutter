@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:signin_firebase/imageupload/image_upload.dart';
+import 'package:signin_firebase/imageupload/show_images.dart';
 import 'package:signin_firebase/model/user_model.dart';
 import 'package:signin_firebase/screens/login_screen.dart';
 
@@ -30,10 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Welcome'),
-        centerTitle: true,
-      ),
+      appBar: _appBar(),
       body: Center(
         child: Padding(
           padding: EdgeInsets.all(20.0),
@@ -75,12 +75,25 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 15,
               ),
-              ActionChip(
-                label: Text('LogOut'),
-                onPressed: () {
-                  logout(context);
-                },
-              ),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ImageUpload(
+                                  userId: loggedinUser.uid,
+                                )));
+                  },
+                  child: Text("Upload Image")),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ShowUpload(userId: loggedinUser.uid)));
+                  },
+                  child: Text("Show Image")),
             ],
           ),
         ),
@@ -92,5 +105,23 @@ class _HomeScreenState extends State<HomeScreen> {
     await FirebaseAuth.instance.signOut();
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => LoginScreen()));
+  }
+
+  _appBar() {
+    //getting the size of our appp bar
+    //we will  get the height
+    final appBarHeight = AppBar().preferredSize.height;
+    return PreferredSize(
+        child: AppBar(
+          title: Text('Profile'),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  logout(context);
+                },
+                icon: Icon(Icons.logout))
+          ],
+        ),
+        preferredSize: Size.fromHeight(appBarHeight));
   }
 }
