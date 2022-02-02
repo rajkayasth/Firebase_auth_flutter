@@ -6,6 +6,7 @@ import 'package:signin_firebase/imageupload/image_upload.dart';
 import 'package:signin_firebase/imageupload/show_images.dart';
 import 'package:signin_firebase/model/user_model.dart';
 import 'package:signin_firebase/screens/login_screen.dart';
+import 'package:signin_firebase/screens/notification_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -94,6 +95,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ShowUpload(userId: loggedinUser.uid)));
                   },
                   child: Text("Show Image")),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => (NotificationScreen())));
+                  },
+                  child: Text("Push Notifiaction Screen")),
             ],
           ),
         ),
